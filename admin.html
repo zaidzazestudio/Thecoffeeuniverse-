@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Universe Specialty Coffee</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Jost:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap');
+
+:root {
+  --black: #0A0A0A;
+  --off-black: #111111;
+  --dark: #181818;
+  --line: #2A2A2A;
+  --muted: #555555;
+  --silver: #888888;
+  --light: #C8C8C8;
+  --white: #F2F2F0;
+  --gold: #C9A96E;
+  --green: #4CAF50;
+  --red: #e53935;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--black); color: var(--white); font-family: 'Jost', sans-serif; font-weight: 300; min-height: 100vh; }
+
+/* ── LOGIN ── */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black);
+}
+
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 3rem;
+  border: 1px solid var(--line);
+  background: var(--off-black);
+}
+
+.login-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.12em;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.login-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2.5rem;
+}
+
+.login-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--silver);
+  display: block;
+  margin-bottom: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.login-input {
+  width: 100%;
+  background: var(--dark);
+  border: 1px solid var(--line);
+  color: var(--white);
+  padding: 0.85rem 1rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.login-input:focus { border-color: var(--gold); }
+
+.login-btn {
+  width: 100%;
+  margin-top: 2rem;
+  background: var(--white);
+  color: var(--black);
+  border: none;
+  padding: 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-btn:hover { background: var(--gold); }
+
+.login-error {
+  color: var(--red);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  margin-top: 1rem;
+  display: none;
+}
+
+/* ── ADMIN LAYOUT ── */
+#admin-screen { display: none; min-height: 100vh; }
+
+.admin-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: var(--off-black);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 100;
+}
+
+.admin-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.admin-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  color: var(--white);
+}
+
+.admin-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--gold);
+  padding: 0.2rem 0.6rem;
+}
+
+.admin-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--line);
+  color: var(--silver);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.header-btn:hover { border-color: var(--white); color: var(--white); }
+
+.save-btn {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+
+.save-btn:hover { background: #43a047; border-color: #43a047; color: white; }
+
+.admin-sidebar {
+  position: fixed;
+  top: 60px; left: 0; bottom: 0;
+  width: 220px;
+  background: var(--off-black);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.sidebar-section {
+  padding: 1.5rem 0 0.5rem;
+}
+
+.sidebar-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 2px solid transparent;
+  user-select: none;
+}
+
+.sidebar-item:hover { color: var(--white); background: var(--dark); }
+.sidebar-item.active { color: var(--gold); border-left-color: var(--gold); background: var(--dark); }
+
+.sidebar-icon { font-size: 1rem; flex-shrink: 0; }
+
+.admin-content {
+  margin-left: 220px;
+  padding-top: 60px;
+  min-height: 100vh;
+}
+
+.admin-panel {
+  display: none;
+  padding: 3rem;
+  max-width: 860px;
+}
+
+.admin-panel.active { display: block; }
+
+.panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.panel-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-weight: 300;
+  margin-bottom: 3rem;
+}
+
+/* ── FORM ELEMENTS ── */
+.form-section {
+  background: var(--off-black);
+  border: 1px solid var(--line);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-section-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.field-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.field-group.single { grid-template-columns: 1fr; }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.field input,
+.field textarea,
+.field select {
+  background: var(--dark);
+  border: 1px solid var(--line);
+  color: var(--white);
+  padding: 0.75rem 1rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.3s;
+  width: 100%;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus { border-color: var(--gold); }
+
+.field textarea { resize: vertical; min-height: 80px; }
+
+/* ── MENU ITEMS ── */
+.menu-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--line);
+  margin-bottom: 1rem;
+}
+
+.menu-item-row {
+  background: var(--dark);
+  display: grid;
+  grid-template-columns: 1fr 1.5fr auto auto;
+  gap: 1px;
+  align-items: center;
+}
+
+.menu-item-row input {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  padding: 0.85rem 1rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 300;
+  outline: none;
+  width: 100%;
+  border-right: 1px solid var(--line);
+}
+
+.menu-item-row input:focus { background: rgba(201,169,110,0.05); }
+
+.menu-item-row input.price-input {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--gold);
+  border-right: none;
+}
+
+.del-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.del-btn:hover { color: var(--red); }
+
+.add-item-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: transparent;
+  border: 1px dashed var(--line);
+  padding: 0.85rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%;
+  text-align: left;
+}
+
+.add-item-btn:hover { border-color: var(--gold); background: var(--gold-dim); }
+
+/* ── HOURS ── */
+.hours-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1px;
+  background: var(--line);
+}
+
+.hours-day-label {
+  background: var(--dark);
+  padding: 0.85rem 1rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--silver);
+  display: flex;
+  align-items: center;
+}
+
+.hours-input {
+  background: var(--dark);
+  border: none;
+  color: var(--white);
+  padding: 0.85rem 1rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  outline: none;
+  width: 100%;
+}
+
+.hours-input:focus { background: rgba(201,169,110,0.05); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--green);
+  color: white;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 1rem 1.5rem;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── PREVIEW NOTICE ── */
+.preview-notice {
+  background: var(--dark);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+  color: var(--silver);
+}
+
+.preview-notice strong { color: var(--white); font-weight: 400; }
+
+/* ── DASHBOARD ── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  margin-bottom: 2rem;
+}
+
+.dash-card {
+  background: var(--off-black);
+  padding: 2rem;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.dash-card:hover { background: var(--dark); }
+
+.dash-icon { font-size: 2rem; margin-bottom: 1rem; }
+
+.dash-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+}
+
+.dash-card p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.dash-arrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-top: 1.2rem;
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .admin-sidebar { width: 180px; }
+  .admin-content { margin-left: 180px; }
+  .admin-panel { padding: 1.5rem; }
+  .field-group { grid-template-columns: 1fr; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .menu-item-row { grid-template-columns: 1fr auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Universe</div>
+    <div class="login-sub">Admin Panel · CMS</div>
+    <label class="login-label">Password</label>
+    <input type="password" class="login-input" id="login-pass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="login-error" id="login-error">Incorrect password. Try again.</div>
+    <button class="login-btn" onclick="doLogin()">Enter Admin →</button>
+    <p style="margin-top:1.5rem;font-size:0.75rem;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.1em;">Default password: <strong style="color:var(--gold);">universe2025</strong></p>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+
+  <!-- HEADER -->
+  <div class="admin-header">
+    <div class="admin-header-left">
+      <span class="admin-logo">Universe</span>
+      <span class="admin-badge">Admin CMS</span>
+    </div>
+    <div class="admin-header-right">
+      <a href="../index.html" target="_blank" class="header-btn">View Site ↗</a>
+      <button class="header-btn save-btn" onclick="saveAll()">Save Changes ✓</button>
+      <button class="header-btn" onclick="doLogout()">Log Out</button>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="admin-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Overview</div>
+      <div class="sidebar-item active" onclick="showPanel('dashboard')">
+        <span class="sidebar-icon">🏠</span> Dashboard
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Content</div>
+      <div class="sidebar-item" onclick="showPanel('general')">
+        <span class="sidebar-icon">⚙️</span> General Info
+      </div>
+      <div class="sidebar-item" onclick="showPanel('hours')">
+        <span class="sidebar-icon">🕐</span> Hours
+      </div>
+      <div class="sidebar-item" onclick="showPanel('menu-espresso')">
+        <span class="sidebar-icon">☕</span> Espresso Menu
+      </div>
+      <div class="sidebar-item" onclick="showPanel('menu-filter')">
+        <span class="sidebar-icon">🫗</span> Filter Menu
+      </div>
+      <div class="sidebar-item" onclick="showPanel('menu-food')">
+        <span class="sidebar-icon">🥐</span> Food Menu
+      </div>
+      <div class="sidebar-item" onclick="showPanel('bean')">
+        <span class="sidebar-icon">🌍</span> Current Bean
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Pages</div>
+      <div class="sidebar-item" onclick="showPanel('page-home')">
+        <span class="sidebar-icon">📄</span> Homepage
+      </div>
+      <div class="sidebar-item" onclick="showPanel('page-about')">
+        <span class="sidebar-icon">👤</span> About Page
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="admin-content">
+
+    <!-- DASHBOARD -->
+    <div class="admin-panel active" id="panel-dashboard">
+      <div class="panel-title">Dashboard</div>
+      <p class="panel-desc">Welcome to your admin panel. Choose a section to edit your site content.</p>
+
+      <div class="preview-notice">
+        <strong>How it works:</strong> Edit any section below, click <strong>Save Changes</strong>, then download the updated files and re-upload to Netlify. Your live site will update immediately.
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dash-card" onclick="showPanel('general')">
+          <div class="dash-icon">⚙️</div>
+          <h3>General Info</h3>
+          <p>Café name, address, phone, Instagram handle</p>
+          <span class="dash-arrow">Edit →</span>
+        </div>
+        <div class="dash-card" onclick="showPanel('hours')">
+          <div class="dash-icon">🕐</div>
+          <h3>Opening Hours</h3>
+          <p>Update your opening hours for each day of the week</p>
+          <span class="dash-arrow">Edit →</span>
+        </div>
+        <div class="dash-card" onclick="showPanel('menu-espresso')">
+          <div class="dash-icon">☕</div>
+          <h3>Espresso Menu</h3>
+          <p>Add, remove or update espresso drinks and prices</p>
+          <span class="dash-arrow">Edit →</span>
+        </div>
+        <div class="dash-card" onclick="showPanel('menu-filter')">
+          <div class="dash-icon">🫗</div>
+          <h3>Filter Menu</h3>
+          <p>Manage filter coffee and cold brew offerings</p>
+          <span class="dash-arrow">Edit →</span>
+        </div>
+        <div class="dash-card" onclick="showPanel('menu-food')">
+          <div class="dash-icon">🥐</div>
+          <h3>Food Menu</h3>
+          <p>Edit your pastries and food items</p>
+          <span class="dash-arrow">Edit →</span>
+        </div>
+        <div class="dash-card" onclick="showPanel('bean')">
+          <div class="dash-icon">🌍</div>
+          <h3>Current Bean</h3>
+          <p>Update the featured single-origin bean on the menu page</p>
+          <span class="dash-arrow">Edit →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERAL INFO -->
+    <div class="admin-panel" id="panel-general">
+      <div class="panel-title">General Info</div>
+      <p class="panel-desc">Basic café information shown across all pages.</p>
+
+      <div class="form-section">
+        <div class="form-section-title">Café Identity</div>
+        <div class="field-group">
+          <div class="field">
+            <label>Café Name</label>
+            <input type="text" id="g-name" value="Universe Specialty Coffee">
+          </div>
+          <div class="field">
+            <label>Tagline</label>
+            <input type="text" id="g-tagline" value="Specialty Coffee Excellence">
+          </div>
+        </div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Hero Description</label>
+            <textarea id="g-desc">A taste of Bergamo on the shores of Lake Geneva. Owned by Maurizio Boi — 2025 Swiss Latte Art Championship runner-up — Universe is Geneva's most intimate specialty coffee experience.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Contact & Location</div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Full Address</label>
+            <input type="text" id="g-address" value="Bd du Pont-d'Arve 46, 1205 Genève, Switzerland">
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="text" id="g-phone" value="+41 22 320 48 95">
+          </div>
+          <div class="field">
+            <label>Instagram Handle</label>
+            <input type="text" id="g-instagram" value="@universespecialtycoffee">
+          </div>
+        </div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Instagram URL</label>
+            <input type="text" id="g-instagram-url" value="https://instagram.com/universespecialtycoffee">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOURS -->
+    <div class="admin-panel" id="panel-hours">
+      <div class="panel-title">Opening Hours</div>
+      <p class="panel-desc">Update your hours for each day. Write "Closed" for days you are not open.</p>
+
+      <div class="form-section">
+        <div class="form-section-title">Weekly Schedule</div>
+        <div class="hours-grid">
+          <div class="hours-day-label">Monday</div>
+          <input class="hours-input" id="h-monday" value="7:30 – 17:30">
+          <div class="hours-day-label">Tuesday</div>
+          <input class="hours-input" id="h-tuesday" value="7:30 – 17:30">
+          <div class="hours-day-label">Wednesday</div>
+          <input class="hours-input" id="h-wednesday" value="7:30 – 17:30">
+          <div class="hours-day-label">Thursday</div>
+          <input class="hours-input" id="h-thursday" value="7:30 – 17:30">
+          <div class="hours-day-label">Friday</div>
+          <input class="hours-input" id="h-friday" value="7:30 – 17:30">
+          <div class="hours-day-label">Saturday</div>
+          <input class="hours-input" id="h-saturday" value="8:30 – 14:30">
+          <div class="hours-day-label">Sunday</div>
+          <input class="hours-input" id="h-sunday" value="Closed">
+        </div>
+      </div>
+    </div>
+
+    <!-- ESPRESSO MENU -->
+    <div class="admin-panel" id="panel-menu-espresso">
+      <div class="panel-title">Espresso Menu</div>
+      <p class="panel-desc">Edit drinks, descriptions and prices. Click × to remove an item.</p>
+      <div class="form-section">
+        <div class="form-section-title">Espresso Drinks</div>
+        <div class="menu-items-list" id="list-espresso"></div>
+        <button class="add-item-btn" onclick="addItem('espresso')">+ Add Drink</button>
+      </div>
+    </div>
+
+    <!-- FILTER MENU -->
+    <div class="admin-panel" id="panel-menu-filter">
+      <div class="panel-title">Filter & Cold Menu</div>
+      <p class="panel-desc">Edit filter coffees, cold brew and iced drinks.</p>
+      <div class="form-section">
+        <div class="form-section-title">Filter & Cold Drinks</div>
+        <div class="menu-items-list" id="list-filter"></div>
+        <button class="add-item-btn" onclick="addItem('filter')">+ Add Drink</button>
+      </div>
+    </div>
+
+    <!-- FOOD MENU -->
+    <div class="admin-panel" id="panel-menu-food">
+      <div class="panel-title">Food Menu</div>
+      <p class="panel-desc">Edit pastries, food items and snacks.</p>
+      <div class="form-section">
+        <div class="form-section-title">Food Items</div>
+        <div class="menu-items-list" id="list-food"></div>
+        <button class="add-item-btn" onclick="addItem('food')">+ Add Item</button>
+      </div>
+    </div>
+
+    <!-- CURRENT BEAN -->
+    <div class="admin-panel" id="panel-bean">
+      <div class="panel-title">Current Bean</div>
+      <p class="panel-desc">Update the featured single-origin bean shown on the menu page.</p>
+      <div class="form-section">
+        <div class="form-section-title">Bean Details</div>
+        <div class="field-group">
+          <div class="field">
+            <label>Bean Name</label>
+            <input type="text" id="b-name" value="Ethiopian Natural">
+          </div>
+          <div class="field">
+            <label>Origin Region</label>
+            <input type="text" id="b-origin" value="Nensebo Region">
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <label>Roaster</label>
+            <input type="text" id="b-roaster" value="Bugan Coffee Lab, Bergamo">
+          </div>
+          <div class="field">
+            <label>Process</label>
+            <input type="text" id="b-process" value="Natural">
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field">
+            <label>Roast Level</label>
+            <input type="text" id="b-roast" value="Light">
+          </div>
+          <div class="field">
+            <label>Altitude</label>
+            <input type="text" id="b-altitude" value="1800–2100m">
+          </div>
+        </div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Tasting Notes</label>
+            <input type="text" id="b-notes" value="Floral, Blueberry">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: HOME -->
+    <div class="admin-panel" id="panel-page-home">
+      <div class="panel-title">Homepage</div>
+      <p class="panel-desc">Edit the key text sections on the homepage.</p>
+      <div class="form-section">
+        <div class="form-section-title">Hero Section</div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Hero Description</label>
+            <textarea id="ph-desc">A taste of Bergamo on the shores of Lake Geneva. Owned by Maurizio Boi — 2025 Swiss Latte Art Championship runner-up — Universe is Geneva's most intimate specialty coffee experience.</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Intro Section</div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Intro Paragraph 1</label>
+            <textarea id="ph-intro1">Maurizio Boi trained at Bugan Coffee Lab in Bergamo, one of Italy's most respected specialty coffee institutions. His craft, refined through competition and passion, now has a home in Geneva's Plainpalais district.</textarea>
+          </div>
+        </div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Intro Paragraph 2</label>
+            <textarea id="ph-intro2">Small by design. The café's intimate scale means every order is personal. Maurizio knows what he's doing — and he keeps everything absolutely spotless, right down to the Modbar espresso machine largely hidden beneath the counter.</textarea>
+          </div>
+        </div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Quote (shown in dark band)</label>
+            <textarea id="ph-quote">"The shop is quite small — but that's what makes it so welcoming. Being able to talk to the barista-owner in such an intimate way instantly creates a completely different experience."</textarea>
+          </div>
+        </div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Quote Attribution</label>
+            <input type="text" id="ph-cite" value="— The Coffee Vine, July 2025">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: ABOUT -->
+    <div class="admin-panel" id="panel-page-about">
+      <div class="panel-title">About Page</div>
+      <p class="panel-desc">Edit the founder story and about page content.</p>
+      <div class="form-section">
+        <div class="form-section-title">Founder</div>
+        <div class="field-group">
+          <div class="field">
+            <label>Founder Name</label>
+            <input type="text" id="pa-founder" value="Maurizio Boi">
+          </div>
+          <div class="field">
+            <label>Founder Title</label>
+            <input type="text" id="pa-title" value="Owner & Head Barista">
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title">Story Paragraphs</div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Story Paragraph 1</label>
+            <textarea id="pa-p1">Universe Specialty Coffee was born from a decision made during the Covid lockdowns, when Maurizio Boi felt the walls of Bergamo caving in. He had spent years training at Bugan Coffee Lab, one of Italy's most respected specialty roasters and barista schools.</textarea>
+          </div>
+        </div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Story Paragraph 2</label>
+            <textarea id="pa-p2">When the world opened again, Maurizio looked west. Geneva — wealthy, international, and underserved by specialty coffee — offered exactly the opportunity he was looking for.</textarea>
+          </div>
+        </div>
+        <div class="field-group single">
+          <div class="field">
+            <label>Story Paragraph 3</label>
+            <textarea id="pa-p3">The space is small. That's intentional. Universe is not a chain. It is one barista, one counter, and one extraordinary conversation about where your coffee came from.</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Changes saved successfully</div>
+
+<script>
+// ── DATA ──
+let data = {
+  menu: {
+    espresso: [
+      { name: "Espresso", description: "Pure, intense, single-origin shot", price: "CHF 3.90" },
+      { name: "Doppio", description: "Double shot, full body", price: "CHF 5.50" },
+      { name: "Cortado", description: "Equal parts espresso & warm milk", price: "CHF 5.00" },
+      { name: "Flat White", description: "Double ristretto, velvety microfoam", price: "CHF 6.00" },
+      { name: "Cappuccino", description: "Classic dry foam, Italian style", price: "CHF 5.50" },
+      { name: "Latte", description: "Silky steamed milk, single shot", price: "CHF 6.00" },
+      { name: "Macchiato", description: "Espresso marked with cold foam", price: "CHF 4.50" },
+      { name: "Long Black", description: "Espresso over hot water, clean & bright", price: "CHF 4.50" }
+    ],
+    filter: [
+      { name: "V60 Pour-Over", description: "Hand-poured, bright & clean", price: "from CHF 6.50" },
+      { name: "Batch Brew", description: "Freshly brewed throughout the day", price: "CHF 5.00" },
+      { name: "Cold Brew", description: "12-hour slow steep. Delicate & floral", price: "CHF 7.00" },
+      { name: "Iced Latte", description: "Double shot over ice & cold milk", price: "CHF 7.00" }
+    ],
+    food: [
+      { name: "Croissant", description: "Buttery, flaky, sourced fresh daily", price: "CHF 4.50" },
+      { name: "Pain au Chocolat", description: "Dark chocolate, Swiss butter pastry", price: "CHF 5.00" },
+      { name: "Toast & Jam", description: "Sourdough, house selection of jams", price: "CHF 6.00" },
+      { name: "Granola Bowl", description: "House granola, yoghurt, fresh fruit", price: "CHF 10.00" }
+    ]
+  }
+};
+
+// ── AUTH ──
+const PASSWORD = "universe2025";
+
+function doLogin() {
+  const input = document.getElementById('login-pass');
+  const val = input ? input.value.trim() : '';
+  const err = document.getElementById('login-error');
+  if (val === PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    if (err) err.style.display = 'none';
+    renderAllMenus();
+  } else {
+    if (err) err.style.display = 'block';
+    if (input) input.focus();
+  }
+}
+
+function doLogout() {
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-pass').value = '';
+}
+
+// ── NAV ──
+function showPanel(id) {
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── MENU RENDERING ──
+function renderMenu(category) {
+  const list = document.getElementById('list-' + category);
+  list.innerHTML = '';
+  data.menu[category].forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'menu-item-row';
+    row.innerHTML = `
+      <input type="text" value="${item.name}" placeholder="Drink name" oninput="data.menu['${category}'][${i}].name=this.value">
+      <input type="text" value="${item.description}" placeholder="Description" oninput="data.menu['${category}'][${i}].description=this.value">
+      <input type="text" class="price-input" value="${item.price}" placeholder="CHF 0.00" oninput="data.menu['${category}'][${i}].price=this.value">
+      <button class="del-btn" onclick="removeItem('${category}',${i})">×</button>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function renderAllMenus() {
+  renderMenu('espresso');
+  renderMenu('filter');
+  renderMenu('food');
+}
+
+function addItem(category) {
+  data.menu[category].push({ name: "New Item", description: "Description", price: "CHF 0.00" });
+  renderMenu(category);
+}
+
+function removeItem(category, index) {
+  data.menu[category].splice(index, 1);
+  renderMenu(category);
+}
+
+// ── SAVE ──
+function saveAll() {
+  // Collect all data into a structured export
+  const content = {
+    cafe: {
+      name: document.getElementById('g-name')?.value || '',
+      tagline: document.getElementById('g-tagline')?.value || '',
+      description: document.getElementById('g-desc')?.value || '',
+      address: document.getElementById('g-address')?.value || '',
+      phone: document.getElementById('g-phone')?.value || '',
+      instagram: document.getElementById('g-instagram')?.value || '',
+      instagram_url: document.getElementById('g-instagram-url')?.value || ''
+    },
+    hours: {
+      monday: document.getElementById('h-monday')?.value || '',
+      tuesday: document.getElementById('h-tuesday')?.value || '',
+      wednesday: document.getElementById('h-wednesday')?.value || '',
+      thursday: document.getElementById('h-thursday')?.value || '',
+      friday: document.getElementById('h-friday')?.value || '',
+      saturday: document.getElementById('h-saturday')?.value || '',
+      sunday: document.getElementById('h-sunday')?.value || ''
+    },
+    menu: data.menu,
+    current_bean: {
+      name: document.getElementById('b-name')?.value || '',
+      origin: document.getElementById('b-origin')?.value || '',
+      roaster: document.getElementById('b-roaster')?.value || '',
+      process: document.getElementById('b-process')?.value || '',
+      roast: document.getElementById('b-roast')?.value || '',
+      altitude: document.getElementById('b-altitude')?.value || '',
+      notes: document.getElementById('b-notes')?.value || ''
+    },
+    pages: {
+      home: {
+        hero_desc: document.getElementById('ph-desc')?.value || '',
+        intro1: document.getElementById('ph-intro1')?.value || '',
+        intro2: document.getElementById('ph-intro2')?.value || '',
+        quote: document.getElementById('ph-quote')?.value || '',
+        cite: document.getElementById('ph-cite')?.value || ''
+      },
+      about: {
+        founder: document.getElementById('pa-founder')?.value || '',
+        founder_title: document.getElementById('pa-title')?.value || '',
+        p1: document.getElementById('pa-p1')?.value || '',
+        p2: document.getElementById('pa-p2')?.value || '',
+        p3: document.getElementById('pa-p3')?.value || ''
+      }
+    }
+  };
+
+  // Download as JSON
+  const blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'content.json';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  showToast('Changes saved & downloaded!');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
